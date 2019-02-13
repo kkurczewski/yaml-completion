@@ -1,0 +1,141 @@
+#!/bin/bash
+
+_a_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts="b2 a2 c2"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_a2_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts="a3"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_a3_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts=""
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_my_cmd_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts="d a"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_b2_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts="b3"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_b3_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts=""
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_c2_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts="c3"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_c3_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts=""
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_d_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts="a3"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_my_cmd_dispatcher() {
+  COMPREPLY=()
+
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  local cword="${COMP_CWORD}"
+  local words=("${COMP_WORDS[@]}")
+
+  local counter=0
+
+  while [ "${counter}" -lt "${cword}" ]; do
+    case "${words["${counter}"]}" in
+      -*)
+        # skip options
+        ;;
+      *)
+        local command="${words[((${counter}))]}"
+        ;;
+    esac
+    (( counter++ ))
+  done
+
+  command="${command//-/_}"
+  local completion_func="_${command}_completion"
+
+  declare -F "${completion_func}" >/dev/null && "${completion_func}"
+
+  return 0
+}
+
+complete -F _my_cmd_dispatcher my-cmd

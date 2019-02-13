@@ -1,0 +1,47 @@
+#!/bin/bash
+
+{% for command in commands %}
+_{{ command.name | replace({ "-" : "_" }) }}_completion() {
+  case "${cur}" in
+    -*)
+      local opts="{{ command.options | join(' ') }}"
+      ;;
+    *)
+      local opts="{{ command.subcommands | join(' ') }}"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+{% endfor %}
+_{{ root_command.name | replace({ "-" : "_" }) }}_dispatcher() {
+  COMPREPLY=()
+
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  local cword="${COMP_CWORD}"
+  local words=("${COMP_WORDS[@]}")
+
+  local counter=0
+
+  while [ "${counter}" -lt "${cword}" ]; do
+    case "${words["${counter}"]}" in
+      -*)
+        # skip options
+        ;;
+      *)
+        local command="${words[((${counter}))]}"
+        ;;
+    esac
+    (( counter++ ))
+  done
+
+  command="${command//-/_}"
+  local completion_func="_${command}_completion"
+
+  declare -F "${completion_func}" >/dev/null && "${completion_func}"
+
+  return 0
+}
+
+complete -F _{{ root_command.name | replace({ "-" : "_" }) }}_dispatcher {{ root_command.name }}
