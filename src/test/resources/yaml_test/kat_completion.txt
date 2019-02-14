@@ -1,0 +1,69 @@
+#!/bin/bash
+
+_kat1_completion() {
+  case "${cur}" in
+    -*)
+      local opts="-k1"
+      ;;
+    *)
+      local opts=""
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_kat_completion() {
+  case "${cur}" in
+    -*)
+      local opts=""
+      ;;
+    *)
+      local opts="kat1 kat2"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_kat2_completion() {
+  case "${cur}" in
+    -*)
+      local opts="-k2"
+      ;;
+    *)
+      local opts=""
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_kat_dispatcher() {
+  COMPREPLY=()
+
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  local cword="${COMP_CWORD}"
+  local words=("${COMP_WORDS[@]}")
+
+  local counter=0
+
+  while [ "${counter}" -lt "${cword}" ]; do
+    case "${words["${counter}"]}" in
+      -*)
+        # skip options
+        ;;
+      *)
+        local command="${words[((${counter}))]}"
+        ;;
+    esac
+    (( counter++ ))
+  done
+
+  command="${command//-/_}"
+  local completion_func="_${command}_completion"
+
+  declare -F "${completion_func}" >/dev/null && "${completion_func}"
+
+  return 0
+}
+
+complete -F _kat_dispatcher kat

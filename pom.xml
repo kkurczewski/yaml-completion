@@ -26,6 +26,12 @@
             <artifactId>pebble</artifactId>
             <version>3.0.7</version>
         </dependency>
+        <!-- yaml parser -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.23</version>
+        </dependency>
         <!-- kotlin -->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
