@@ -9,7 +9,6 @@ import java.io.Writer
 
 class YamlCompletionGraphParserTest {
 
-
     @Test
     fun load_simple_yaml() {
         val writer: Writer = StringWriter()

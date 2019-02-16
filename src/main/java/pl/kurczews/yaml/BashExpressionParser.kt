@@ -1,0 +1,63 @@
+package pl.kurczews.yaml
+
+import pl.kurczews.common.slice2
+import pl.kurczews.common.split2
+import java.util.*
+
+class BashExpressionParser {
+
+    companion object {
+        private const val EXPRESSION_PREFIX = '$'
+        private const val COMPLETION_SEPARATOR = ' '
+    }
+
+    fun parse(line: String): List<String> {
+        return when {
+            line.contains(EXPRESSION_PREFIX) -> processLineWithExpression(line)
+            else -> line.split(COMPLETION_SEPARATOR)
+        }
+    }
+
+    private fun processLineWithExpression(initialLine: String): List<String> {
+        val words = mutableListOf<String>()
+        val stack = Stack<String>()
+        stack.push(initialLine)
+        while(stack.isNotEmpty()) {
+            val line = stack.pop()
+            val (word, leftovers) = when {
+                line.startsWith(EXPRESSION_PREFIX) -> extractExpression(line)
+                else -> line.split2(COMPLETION_SEPARATOR)
+            }
+            words.add(word)
+            if (leftovers.isNotEmpty()) {
+                stack.push(leftovers.trimStart())
+            }
+        }
+        return words
+    }
+
+    private fun extractExpression(line: String): Pair<String, String> {
+        val brackets = mapOf<Char, Int>().withDefault { 0 }
+        for ((index, char) in line.withIndex()) {
+            when {
+                char.isOpeningBracket() -> brackets[char]?.inc()
+                char.isClosingBracket() -> {
+                    brackets[char]?.dec()
+                    if (brackets.values.all { it == 0 }) {
+                        return line.slice2(index)
+                    }
+                }
+            }
+        }
+        throw IllegalArgumentException("Couldn't extract expression for: $line")
+    }
+
+    private fun Char.isOpeningBracket(): Boolean {
+        return this == '{' || this == '('
+    }
+
+    private fun Char.isClosingBracket(): Boolean {
+        return this == '}' || this == ')'
+    }
+
+}

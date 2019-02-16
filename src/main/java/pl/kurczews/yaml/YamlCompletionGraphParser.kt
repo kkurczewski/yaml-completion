@@ -11,6 +11,7 @@ class YamlCompletionGraphParser {
 
     private val extractor = CommandExtractor()
     private val generator = CompletionGenerator()
+    private val bashExpressionParser = BashExpressionParser()
 
     @Suppress("UNCHECKED_CAST")
     fun parseYaml(reader: Reader, writer: Writer) {
@@ -24,7 +25,7 @@ class YamlCompletionGraphParser {
         for (key in yamlEntry.keys) {
             val graph = GuavaDirectedAcyclicGraph(key)
             for (arc in yamlEntry[key] ?: emptyList()) {
-                graph.addArc(arc.split(" ").toSet())
+                graph.addArc(bashExpressionParser.parse(arc).toSet())
             }
             val cmds = extractor.extract(graph)
             generator.generate(cmds, writer)
