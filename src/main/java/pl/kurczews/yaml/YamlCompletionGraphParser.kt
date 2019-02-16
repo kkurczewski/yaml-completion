@@ -1,7 +1,7 @@
 package pl.kurczews.yaml
 
 import org.yaml.snakeyaml.Yaml
-import pl.kurczews.completion.extractor.CompletionExtractor
+import pl.kurczews.completion.extractor.CommandExtractor
 import pl.kurczews.completion.generator.CompletionGenerator
 import pl.kurczews.graph.dag.guava.GuavaDirectedAcyclicGraph
 import java.io.Reader
@@ -10,7 +10,7 @@ import java.io.Writer
 
 class YamlCompletionGraphParser {
 
-    private val extractor = CompletionExtractor()
+    private val extractor = CommandExtractor()
     private val generator = CompletionGenerator()
 
     fun parseYaml(reader: Reader, writer: Writer) {

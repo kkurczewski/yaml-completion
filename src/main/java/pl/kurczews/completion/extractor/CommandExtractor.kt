@@ -2,10 +2,7 @@ package pl.kurczews.completion.extractor
 
 import pl.kurczews.graph.dag.DirectedAcyclicGraph
 
-// TODO two-space split to avoid space errors (arc)??
-// TODO strict-mode (as separate class), check whole arc to perform completion
-
-class CompletionExtractor {
+class CommandExtractor {
 
     companion object {
         private const val OPTION_PREFIX = "-"
@@ -15,14 +12,14 @@ class CompletionExtractor {
         val cmds = directedGraph
                 .getNodes()
                 .filter { !it.startsWith(OPTION_PREFIX) }
-                .map { extractCompletion(it, directedGraph) }
+                .map { buildCommand(it, directedGraph) }
 
         val rootCmd = cmds.first { it.name == directedGraph.head }
 
         return Pair(rootCmd, cmds)
     }
 
-    private fun extractCompletion(command: String, directedGraph: DirectedAcyclicGraph<String>): Command {
+    private fun buildCommand(command: String, directedGraph: DirectedAcyclicGraph<String>): Command {
         val (subCmds, opts) = directedGraph
                 .getOutgoingNodes(command)
                 .partition { !it.startsWith(OPTION_PREFIX) }

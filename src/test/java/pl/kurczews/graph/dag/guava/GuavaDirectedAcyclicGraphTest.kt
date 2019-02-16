@@ -2,6 +2,7 @@ package pl.kurczews.graph.dag.guava
 
 import org.junit.Test
 import pl.kurczews.graph.dag.DirectedAcyclicGraph
+import kotlin.test.assertTrue
 
 class GuavaDirectedAcyclicGraphTest {
 
@@ -26,6 +27,6 @@ class GuavaDirectedAcyclicGraphTest {
     }
 
     private fun DirectedAcyclicGraph<String>.assertContainsEdge(first: String, second: String) {
-        kotlin.test.assertTrue("Expected graph to contain edge $first -> $second") { this.containsEdge(first, second) }
+        assertTrue("Expected graph to contain edge $first -> $second") { this.containsEdge(first, second) }
     }
 }

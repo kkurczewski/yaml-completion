@@ -9,7 +9,7 @@ import java.util.*
 class CompletionGenerator {
 
     private val engine = PebbleEngine.Builder().strictVariables(true).build()
-    private val completionTemplate = engine.getTemplate("src/main/resources/high_order_cmd_completion.txt")
+    private val completionTemplate = engine.getTemplate("high_order_cmd_completion.txt")
 
     fun generate(rootCmd: Command, cmds: List<Command>, writer: Writer) {
         val context = HashMap<String, Any>().apply {

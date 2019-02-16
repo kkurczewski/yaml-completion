@@ -15,7 +15,7 @@ class CommandExtractorTest {
                 .addEdge("kat", "kat3")
                 .build()
 
-        val (rootCmd, completions) = CompletionExtractor().extract(simpleGraph)
+        val (rootCmd, completions) = CommandExtractor().extract(simpleGraph)
 
         assertThat(completions).containsExactlyInAnyOrder(
                 Command("kat", listOf("kat1", "kat2", "kat3"), emptyList()),
@@ -38,7 +38,7 @@ class CommandExtractorTest {
                 .addEdge("kat1", "-kk1")
                 .build()
 
-        val (rootCmd, completions) = CompletionExtractor().extract(simpleOptionsGraph)
+        val (rootCmd, completions) = CommandExtractor().extract(simpleOptionsGraph)
 
         assertThat(completions).containsExactlyInAnyOrder(
                 Command("kat", listOf("kat1", "kat2", "kat3"), listOf("-k1", "-k2")),
@@ -64,7 +64,7 @@ class CommandExtractorTest {
                 .addEdge("kat22", "-kk2")
                 .build()
 
-        val (rootCmd, completions) = CompletionExtractor().extract(simpleOptionsGraph)
+        val (rootCmd, completions) = CommandExtractor().extract(simpleOptionsGraph)
 
         assertThat(completions).containsExactlyInAnyOrder(
                 Command("kat", listOf("kat1", "kat2", "kat3"), listOf("-k1", "-k2")),
