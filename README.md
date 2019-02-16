@@ -2,7 +2,7 @@
 
 Generate your bash completions from simple yaml
 
-# Example
+## Example
 
 Given command `kat` with two subcommands, each with option. To generate completion create yaml with expected possibilities: 
 
