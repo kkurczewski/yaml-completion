@@ -7,20 +7,20 @@ import pl.kurczews.graph.dag.guava.GuavaDirectedAcyclicGraph
 import java.io.Reader
 import java.io.Writer
 
-
 class YamlCompletionGraphParser {
 
     private val extractor = CommandExtractor()
     private val generator = CompletionGenerator()
 
+    @Suppress("UNCHECKED_CAST")
     fun parseYaml(reader: Reader, writer: Writer) {
-        val entries = Yaml().loadAll(reader).iterator()
+        val entries = Yaml().loadAll(reader).iterator() as Iterator<Map<String, List<String>>>
         for (entry in entries) {
-            process(entry as HashMap<String, List<String>>, writer)
+            process(entry, writer)
         }
     }
 
-    private fun process(yamlEntry: HashMap<String, List<String>>, writer: Writer) {
+    private fun process(yamlEntry: Map<String, List<String>>, writer: Writer) {
         for (key in yamlEntry.keys) {
             val graph = GuavaDirectedAcyclicGraph(key)
             for (arc in yamlEntry[key] ?: emptyList()) {

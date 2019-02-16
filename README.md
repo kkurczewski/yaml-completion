@@ -16,7 +16,7 @@ You may treat these instructions as recipe for directed acyclic graph. Same node
 
 Then run:
 ```
-java -jar target/completion-builder-1.0-SNAPSHOT.jar completions.yml bash_completion.sh
+java -jar target/completion-builder-1.0-SNAPSHOT-jar-with-dependencies.jar completions.yml bash_completion.sh
 ```
 
 Where `bash_completion.sh` is name of output file. Done.
