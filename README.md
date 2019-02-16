@@ -1,4 +1,4 @@
-# Completion builder
+# Yaml completion builder
 
 Generate your bash completions from simple yaml
 
