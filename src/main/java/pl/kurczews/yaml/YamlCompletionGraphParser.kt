@@ -24,10 +24,10 @@ class YamlCompletionGraphParser {
         for (key in yamlEntry.keys) {
             val graph = GuavaDirectedAcyclicGraph(key)
             for (arc in yamlEntry[key] ?: emptyList()) {
-                graph.addArc(arc.split(" "))
+                graph.addArc(arc.split(" ").toSet())
             }
-            val (rootCmd, cmds) = extractor.extract(graph)
-            generator.generate(rootCmd, cmds, writer)
+            val cmds = extractor.extract(graph)
+            generator.generate(cmds, writer)
         }
     }
 }

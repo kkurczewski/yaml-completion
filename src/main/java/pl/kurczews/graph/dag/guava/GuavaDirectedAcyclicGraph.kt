@@ -1,5 +1,6 @@
 package pl.kurczews.graph.dag.guava
 
+import com.google.common.graph.ElementOrder
 import com.google.common.graph.GraphBuilder
 import com.google.common.graph.MutableGraph
 import pl.kurczews.common.forEach2
@@ -9,8 +10,13 @@ class GuavaDirectedAcyclicGraph<T>(head: T) : MutableDirectedAcyclicGraph<T>(hea
 
     private val graph: MutableGraph<T> = GraphBuilder
             .directed()
+            .nodeOrder<T>(ElementOrder.insertion())
             .allowsSelfLoops(false)
             .build()
+
+    init {
+        graph.addNode(head)
+    }
 
     override fun addNode(node: T): MutableDirectedAcyclicGraph<T> {
         graph.addNode(node)
@@ -22,7 +28,7 @@ class GuavaDirectedAcyclicGraph<T>(head: T) : MutableDirectedAcyclicGraph<T>(hea
         return this
     }
 
-    override fun addArc(nodes: List<T>): MutableDirectedAcyclicGraph<T> {
+    override fun addArc(nodes: Set<T>): MutableDirectedAcyclicGraph<T> {
         nodes.forEach2 { first, second ->
             graph.addNode(first)
             graph.addNode(second)

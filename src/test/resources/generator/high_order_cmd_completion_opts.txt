@@ -3,7 +3,7 @@
 _my_cmd_completion() {
   case "${cur}" in
     -*)
-      local opts=""
+      local opts="-a --all"
       ;;
     *)
       local opts="a d"
@@ -39,7 +39,7 @@ _a2_completion() {
 _b2_completion() {
   case "${cur}" in
     -*)
-      local opts=""
+      local opts="-a --all"
       ;;
     *)
       local opts="b3"
@@ -55,6 +55,18 @@ _c2_completion() {
       ;;
     *)
       local opts="c3"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_c3_completion() {
+  case "${cur}" in
+    -*)
+      local opts="-a --all"
+      ;;
+    *)
+      local opts=""
       ;;
   esac
   COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )

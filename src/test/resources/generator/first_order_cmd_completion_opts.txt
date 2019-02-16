@@ -1,0 +1,21 @@
+#!/bin/bash
+
+_foo_completion() {
+  COMPREPLY=()
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local words_count="${#COMP_WORDS[@]}"
+
+  [ "${words_count}" -gt 2 ] && return
+
+  case "${cur}" in
+    -*)
+      local opts="-a --all"
+      ;;
+    *)
+      local opts="foo1 foo2 foo3"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+complete -F _foo_completion foo

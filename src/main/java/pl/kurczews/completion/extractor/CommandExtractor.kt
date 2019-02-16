@@ -8,15 +8,12 @@ class CommandExtractor {
         private const val OPTION_PREFIX = "-"
     }
 
-    fun extract(directedGraph: DirectedAcyclicGraph<String>): Pair<Command, List<Command>> {
-        val cmds = directedGraph
+    fun extract(directedGraph: DirectedAcyclicGraph<String>): List<Command> {
+        return directedGraph
                 .getNodes()
                 .filter { !it.startsWith(OPTION_PREFIX) }
                 .map { buildCommand(it, directedGraph) }
-
-        val rootCmd = cmds.first { it.name == directedGraph.head }
-
-        return Pair(rootCmd, cmds)
+                .filterNot { it.isLeaf() }
     }
 
     private fun buildCommand(command: String, directedGraph: DirectedAcyclicGraph<String>): Command {
@@ -24,6 +21,8 @@ class CommandExtractor {
                 .getOutgoingNodes(command)
                 .partition { !it.startsWith(OPTION_PREFIX) }
 
-        return Command(command, subCmds, opts)
+        return Command(command, subCmds.toSet(), opts.toSet())
     }
+
+    private fun Command.isLeaf(): Boolean = this.subcommands.isEmpty() && this.options.isEmpty()
 }

@@ -9,10 +9,10 @@ class GuavaDirectedAcyclicGraphTest {
     @Test
     fun should_build_graph_from_completion_lines() {
         val graph = GuavaDirectedAcyclicGraph("cmd")
-                .addArc(listOf("a", "a2", "a3"))
-                .addArc(listOf("a", "b2", "b3"))
-                .addArc(listOf("a", "c2", "c3"))
-                .addArc(listOf("d", "a3"))
+                .addArc(setOf("a", "a2", "a3"))
+                .addArc(setOf("a", "b2", "b3"))
+                .addArc(setOf("a", "c2", "c3"))
+                .addArc(setOf("d", "a3"))
                 .build()
 
         graph.assertContainsEdge("cmd", "a")

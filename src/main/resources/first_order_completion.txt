@@ -1,0 +1,22 @@
+#!/bin/bash
+
+_{{ root_command.name | replace({ "-" : "_" }) }}_completion() {
+  COMPREPLY=()
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  {{ 'local words_count="${#COMP_WORDS[@]}"' }}{# brace-quoting is for escaping comment character #}
+
+
+  [ "${words_count}" -gt 2 ] && return
+
+  case "${cur}" in
+    -*)
+      local opts="{{ root_command.options | join(' ') }}"
+      ;;
+    *)
+      local opts="{{ root_command.subcommands | join(' ') }}"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+complete -F _{{ root_command.name | replace({ "-" : "_" }) }}_completion {{ root_command.name }}

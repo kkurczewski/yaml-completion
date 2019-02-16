@@ -1,17 +1,5 @@
 #!/bin/bash
 
-_kat1_completion() {
-  case "${cur}" in
-    -*)
-      local opts="-k1"
-      ;;
-    *)
-      local opts=""
-      ;;
-  esac
-  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-}
-
 _kat_completion() {
   case "${cur}" in
     -*)
@@ -19,6 +7,18 @@ _kat_completion() {
       ;;
     *)
       local opts="kat1 kat2"
+      ;;
+  esac
+  COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+}
+
+_kat1_completion() {
+  case "${cur}" in
+    -*)
+      local opts="-k1"
+      ;;
+    *)
+      local opts=""
       ;;
   esac
   COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
