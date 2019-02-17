@@ -1,0 +1,7 @@
+mvn:
+  - clean compile
+  - clean test
+  - clean package
+  - compile
+  - test
+  - package -DskipTests
