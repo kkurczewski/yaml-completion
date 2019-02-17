@@ -21,10 +21,10 @@ class YamlCompletionGraphParser {
         }
     }
 
-    private fun process(yamlEntry: Map<String, List<String>>, writer: Writer) {
-        for (key in yamlEntry.keys) {
-            val graph = GuavaDirectedAcyclicGraph(key)
-            for (arc in yamlEntry[key] ?: emptyList()) {
+    private fun process(yaml: Map<String, List<String>>, writer: Writer) {
+        for (command in yaml.keys) {
+            val graph = GuavaDirectedAcyclicGraph(command)
+            for (arc in yaml[command] ?: emptyList()) {
                 graph.addArc(bashExpressionParser.parse(arc).toSet())
             }
             val cmds = extractor.extract(graph)

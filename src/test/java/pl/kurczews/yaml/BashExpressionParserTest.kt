@@ -1,6 +1,7 @@
 package pl.kurczews.yaml
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 
 class BashExpressionParserTest {
@@ -24,5 +25,16 @@ class BashExpressionParserTest {
         assertThat(expressionParser.parse("\${foo} ab cd")).containsExactly("\${foo}", "ab", "cd")
         assertThat(expressionParser.parse("ab \${foo} cd")).containsExactly("ab", "\${foo}", "cd")
         assertThat(expressionParser.parse("ab cd \${foo}")).containsExactly("ab", "cd", "\${foo}")
+    }
+
+    @Test
+    fun parse_line_with_nested_expression() {
+        assertThat(expressionParser.parse("$(ls \${foo}) ab cd")).containsExactly("$(ls \${foo})", "ab", "cd")
+    }
+
+    @Test
+    fun throw_when_unbalanced_brackets() {
+        assertThatThrownBy { expressionParser.parse("$((ls \${foo)) ab cd") }
+                .hasMessageContaining("\$((ls \${foo)) ab cd")
     }
 }

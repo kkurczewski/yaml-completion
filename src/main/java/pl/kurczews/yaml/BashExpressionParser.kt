@@ -2,12 +2,13 @@ package pl.kurczews.yaml
 
 import pl.kurczews.common.slice2
 import pl.kurczews.common.split2
+import pl.kurczews.common.update
 import java.util.*
 
 class BashExpressionParser {
 
     companion object {
-        private const val EXPRESSION_PREFIX = '$'
+        const val EXPRESSION_PREFIX = '$'
         private const val COMPLETION_SEPARATOR = ' '
     }
 
@@ -37,12 +38,13 @@ class BashExpressionParser {
     }
 
     private fun extractExpression(line: String): Pair<String, String> {
-        val brackets = mapOf<Char, Int>().withDefault { 0 }
+        val brackets = mutableMapOf<Char, Int>().withDefault { 0 }
         for ((index, char) in line.withIndex()) {
             when {
-                char.isOpeningBracket() -> brackets[char]?.inc()
+                char == '{' -> brackets.update('}') { it.inc() }
+                char == '(' -> brackets.update(')') { it.inc() }
                 char.isClosingBracket() -> {
-                    brackets[char]?.dec()
+                    brackets.update(char) { it.dec() }
                     if (brackets.values.all { it == 0 }) {
                         return line.slice2(index)
                     }
@@ -50,10 +52,6 @@ class BashExpressionParser {
             }
         }
         throw IllegalArgumentException("Couldn't extract expression for: $line")
-    }
-
-    private fun Char.isOpeningBracket(): Boolean {
-        return this == '{' || this == '('
     }
 
     private fun Char.isClosingBracket(): Boolean {

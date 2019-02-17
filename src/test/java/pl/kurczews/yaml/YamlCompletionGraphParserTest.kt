@@ -10,11 +10,19 @@ import java.io.Writer
 class YamlCompletionGraphParserTest {
 
     @Test
-    fun load_simple_yaml() {
+    fun process_simple_yaml() {
         val writer: Writer = StringWriter()
-        YamlCompletionGraphParser().parseYaml(readerOf("yaml_test/simple_yaml.yml"), writer)
+        YamlCompletionGraphParser().parseYaml(readerOf("yaml_test/simple/simple.yml"), writer)
 
-        assertThat(writer.toString()).isEqualTo(contentOf("yaml_test/kat_completion.txt"))
+        assertThat(writer.toString()).isEqualTo(contentOf("yaml_test/simple/simple.txt"))
+    }
+
+    @Test
+    fun process_yaml_with_expression() {
+        val writer: Writer = StringWriter()
+        YamlCompletionGraphParser().parseYaml(readerOf("yaml_test/expression/expression.yml"), writer)
+
+        assertThat(writer.toString()).isEqualTo(contentOf("yaml_test/expression/expression.txt"))
     }
 
     private fun readerOf(file: String): InputStreamReader {

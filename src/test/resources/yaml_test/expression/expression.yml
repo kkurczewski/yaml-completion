@@ -1,0 +1,3 @@
+kat:
+  - kat1 $(ls /tmp)
+  - kat2 -k2
