@@ -19,4 +19,4 @@ Then run:
 java -jar target/completion-builder-1.0-SNAPSHOT.jar kat_completion.yml
 ```
 
-Where `bash_completion.sh` is name of output file. Done.
+This will generate file named `kat_completion` (or whatever name you pass as second argument) with your completion.
