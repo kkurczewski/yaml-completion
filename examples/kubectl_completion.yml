@@ -4,8 +4,8 @@ kubectl:
   - get configmap
   - get deploy
   - get pvc
-  - delete deploy $(kubectl get deploy)
-  - delete pvc $(kubectl get pvc)
-  - delete pod $(kubectl get pod)
-  - describe pod $(kubectl get pod)
-  - logs $(kubectl get pod)
+  - delete deploy $(kubectl get deploy --no-headers -o custom-columns=":metadata.name")
+  - delete pvc $(kubectl get pvc --no-headers -o custom-columns=":metadata.name")
+  - delete pod $(kubectl get pod --no-headers -o custom-columns=":metadata.name")
+  - describe pod $(kubectl get pod --no-headers -o custom-columns=":metadata.name")
+  - logs $(kubectl get pod --no-headers -o custom-columns=":metadata.name")

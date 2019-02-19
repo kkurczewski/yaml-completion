@@ -4,10 +4,10 @@
 _{{ command.name | replace({ "-" : "_" }) }}_completion() {
   case "${cur}" in
     -*)
-      local opts="{{ command.options | join(' ') }}"
+      local opts="{{ command.options | join(' ') | raw }}"
       ;;
     *)
-      local opts="{{ command.subcommands | join(' ') }}"
+      local opts="{{ command.subcommands | join(' ') | raw }}"
       ;;
   esac
   COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )

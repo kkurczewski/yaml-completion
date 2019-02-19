@@ -23,7 +23,7 @@ class BashExpressionParser {
         val words = mutableListOf<String>()
         val stack = Stack<String>()
         stack.push(initialLine)
-        while(stack.isNotEmpty()) {
+        while (stack.isNotEmpty()) {
             val line = stack.pop()
             val (word, leftovers) = when {
                 line.startsWith(EXPRESSION_PREFIX) -> extractExpression(line)
@@ -57,5 +57,4 @@ class BashExpressionParser {
     private fun Char.isClosingBracket(): Boolean {
         return this == '}' || this == ')'
     }
-
 }
