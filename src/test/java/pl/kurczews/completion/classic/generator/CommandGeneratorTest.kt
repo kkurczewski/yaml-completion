@@ -1,8 +1,9 @@
-package pl.kurczews.completion.generator
+package pl.kurczews.completion.classic.generator
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import pl.kurczews.completion.extractor.Command
+import pl.kurczews.completion.classic.Command
+import pl.kurczews.completion.classic.CompletionGenerator
 import java.io.File
 import java.io.StringWriter
 

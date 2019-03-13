@@ -1,4 +1,4 @@
-package pl.kurczews.completion.extractor
+package pl.kurczews.completion.classic
 
 import pl.kurczews.graph.dag.DirectedAcyclicGraph
 import pl.kurczews.yaml.BashSplitter.Companion.EXPRESSION_PREFIX

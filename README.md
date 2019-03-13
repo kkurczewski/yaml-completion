@@ -20,3 +20,5 @@ java -jar target/completion-builder-1.0-SNAPSHOT.jar kat_completion.yml
 ```
 
 This will generate file named `kat_completion` in `out` directory (or whatever directory you pass as second argument) with your completion.
+
+// TODO update readme about fuzzy

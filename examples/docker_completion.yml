@@ -1,0 +1,4 @@
+meta:
+  completion-type: fuzzy
+
+docker-run: docker images | awk '{print $1}'

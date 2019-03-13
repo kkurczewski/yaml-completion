@@ -1,7 +1,6 @@
-package pl.kurczews.completion.generator
+package pl.kurczews.completion.classic
 
 import com.mitchellbosecke.pebble.PebbleEngine
-import pl.kurczews.completion.extractor.Command
 import java.io.Writer
 import java.util.*
 

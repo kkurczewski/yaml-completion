@@ -1,0 +1,8 @@
+#!/bin/bash
+
+_{{ root_command.name | replace({ "-" : "_" }) }}_fuzzy_completion() {
+  FZF_COMPLETION_TRIGGER='{{ fzf_trigger }}'
+  _fzf_complete "{{ fzf_options | join(' ') }}" < <({{ options_cmd | raw }})
+}
+
+complete -F _{{ root_command.name | replace({ "-" : "_" }) }}_fuzzy_completion {{ root_command.name }}

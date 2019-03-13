@@ -1,7 +1,9 @@
-package pl.kurczews.completion.extractor
+package pl.kurczews.completion.classic.extractor
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import pl.kurczews.completion.classic.Command
+import pl.kurczews.completion.classic.CommandExtractor
 import pl.kurczews.graph.dag.guava.GuavaDirectedAcyclicGraph
 
 class CommandExtractorTest {
