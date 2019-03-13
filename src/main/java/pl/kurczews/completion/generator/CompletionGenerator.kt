@@ -8,8 +8,8 @@ import java.util.*
 class CompletionGenerator {
 
     private val engine = PebbleEngine.Builder().strictVariables(true).build()
-    private val firstOrderCompletion = engine.getTemplate("first_order_completion.txt")
-    private val highOrderCompletion = engine.getTemplate("high_order_completion.txt")
+    private val firstOrderCompletion = engine.getTemplate("first_order_completion.pebble")
+    private val highOrderCompletion = engine.getTemplate("high_order_completion.pebble")
 
     fun generate(cmds: List<Command>, writer: Writer) {
         if (cmds.size > 1) {

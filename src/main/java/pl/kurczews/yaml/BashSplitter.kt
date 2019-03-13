@@ -5,14 +5,17 @@ import pl.kurczews.common.split2
 import pl.kurczews.common.update
 import java.util.*
 
-class BashExpressionParser {
+class BashSplitter {
 
     companion object {
         const val EXPRESSION_PREFIX = '$'
         private const val COMPLETION_SEPARATOR = ' '
     }
 
-    fun parse(line: String): List<String> {
+    /**
+     * Splits bash ${variables} and $(substitutions) as single words despite spaces
+     */
+    fun split(line: String): List<String> {
         return when {
             line.contains(EXPRESSION_PREFIX) -> processLineWithExpression(line)
             else -> line.split(COMPLETION_SEPARATOR)

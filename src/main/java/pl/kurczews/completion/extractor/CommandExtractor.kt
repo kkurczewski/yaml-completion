@@ -1,7 +1,7 @@
 package pl.kurczews.completion.extractor
 
 import pl.kurczews.graph.dag.DirectedAcyclicGraph
-import pl.kurczews.yaml.BashExpressionParser.Companion.EXPRESSION_PREFIX
+import pl.kurczews.yaml.BashSplitter.Companion.EXPRESSION_PREFIX
 
 class CommandExtractor {
 
