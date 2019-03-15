@@ -5,7 +5,7 @@ _{{ root_command.name | replace({ "-" : "_" }) }}_completion() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   {{ 'local words_count="${#COMP_WORDS[@]}"' }}{# brace-quoting is for escaping comment character #}
 
-
+  # // TODO improve or remove words count limit, consider dividing options from subcommands
   [ "${words_count}" -gt 2 ] && return
 
   case "${cur}" in

@@ -1,4 +1,13 @@
 meta:
-  completion-type: fuzzy
+  structure: tree | chain
+  type: fuzzy
 
-docker-run: docker images | awk '{print $1}'
+# limitations:
+#  tree = any expression must be last in chain
+#  chain = more complex tree without limitations, gives access to previous word in chain
+
+tpl:
+  - get $(ls /foo) $(ls /bar)
+
+kbe:
+  - $(ls /foo)

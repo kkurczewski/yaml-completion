@@ -5,12 +5,10 @@ import pl.kurczews.common.split2
 import pl.kurczews.common.update
 import java.util.*
 
-class BashSplitter {
+object BashSplitter {
 
-    companion object {
-        const val EXPRESSION_PREFIX = '$'
-        private const val COMPLETION_SEPARATOR = ' '
-    }
+    internal const val EXPRESSION_PREFIX = '$'
+    private const val COMPLETION_SEPARATOR = ' '
 
     /**
      * Splits bash ${variables} and $(substitutions) as single words despite spaces

@@ -1,15 +1,15 @@
-package pl.kurczews.completion.classic
+package pl.kurczews.completion.bash
 
 import pl.kurczews.graph.dag.DirectedAcyclicGraph
-import pl.kurczews.yaml.BashSplitter.Companion.EXPRESSION_PREFIX
+import pl.kurczews.yaml.BashSplitter.EXPRESSION_PREFIX
 
-class CommandExtractor {
+class BashCommandExtractor {
 
     companion object {
         private const val OPTION_PREFIX = "-"
     }
 
-    fun extract(directedGraph: DirectedAcyclicGraph<String>): List<Command> {
+    fun extract(directedGraph: DirectedAcyclicGraph<String>): List<BashCommand> {
         return directedGraph
                 .getNodes()
                 .filterNot { isExpression(it) }
@@ -18,15 +18,15 @@ class CommandExtractor {
                 .filterNot { isLeaf(it) }
     }
 
-    private fun buildCommand(command: String, directedGraph: DirectedAcyclicGraph<String>): Command {
+    private fun buildCommand(command: String, directedGraph: DirectedAcyclicGraph<String>): BashCommand {
         val (opts, subCmds) = directedGraph
                 .getOutgoingNodes(command)
                 .partition { isOption(it) }
 
-        return Command(command, subCmds.toSet(), opts.toSet())
+        return BashCommand(command, subCmds.toSet(), opts.toSet())
     }
 
-    private fun isLeaf(cmd: Command): Boolean = cmd.subcommands.isEmpty() && cmd.options.isEmpty()
+    private fun isLeaf(cmd: BashCommand): Boolean = cmd.subcommands.isEmpty() && cmd.options.isEmpty()
 
     private fun isExpression(cmd: String) = cmd.startsWith(EXPRESSION_PREFIX)
 

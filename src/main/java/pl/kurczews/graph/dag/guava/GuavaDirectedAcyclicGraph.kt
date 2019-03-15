@@ -28,7 +28,7 @@ class GuavaDirectedAcyclicGraph<T>(head: T) : MutableDirectedAcyclicGraph<T>(hea
         return this
     }
 
-    override fun addArc(nodes: Set<T>): MutableDirectedAcyclicGraph<T> {
+    override fun addArc(nodes: List<T>): MutableDirectedAcyclicGraph<T> {
         nodes.forEach2 { first, second ->
             graph.addNode(first)
             graph.addNode(second)

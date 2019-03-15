@@ -1,4 +1,4 @@
-package pl.kurczews.completion.fuzzy
+package pl.kurczews.completion.bash
 
 import com.mitchellbosecke.pebble.PebbleEngine
 import pl.kurczews.completion.CompletionGenerator
@@ -8,14 +8,14 @@ import pl.kurczews.yaml.BashSplitter
 import java.io.Writer
 import java.util.*
 
-class FuzzyCompletionGenerator : CompletionGenerator {
+class BashCompletionGenerator : CompletionGenerator {
 
     private val engine = PebbleEngine.Builder().strictVariables(true).build()
-    private val firstOrderFuzzyCompletion = engine.getTemplate("fuzzy_completion.pebble")
-    private val cmdExtractor = FuzzyCommandExtractor()
+    private val firstOrderCompletion = engine.getTemplate("first_order_completion.pebble")
+    private val highOrderCompletion = engine.getTemplate("high_order_completion.pebble")
+    private val cmdExtractor = BashCommandExtractor()
 
     override fun process(yamlPayload: YamlEntry<List<String>>, writer: Writer) {
-        // TODO allow fuzzy on subcommands (first, second word, etc)
         val cmds = parseCmds(yamlPayload)
         when {
             cmds.size > 1 -> highOrderCompletion(cmds, writer)
@@ -23,7 +23,7 @@ class FuzzyCompletionGenerator : CompletionGenerator {
         }
     }
 
-    private fun parseCmds(yamlPayload: YamlEntry<List<String>>): List<FuzzyCommand> {
+    private fun parseCmds(yamlPayload: YamlEntry<List<String>>): List<BashCommand> {
         val graph = buildGraph(yamlPayload)
         return cmdExtractor.extract(graph)
     }
@@ -37,17 +37,18 @@ class FuzzyCompletionGenerator : CompletionGenerator {
         return graph
     }
 
-    private fun firstOrderCompletion(rootCmd: FuzzyCommand, writer: Writer) {
-        val context = HashMap<String, Any?>().apply {
+    private fun firstOrderCompletion(rootCmd: BashCommand, writer: Writer) {
+        val context = HashMap<String, Any>().apply {
             this["root_command"] = rootCmd
-            this["options_cmd"] = rootCmd.subcommandsExpression
-            this["fzf_trigger"] = rootCmd.fzfTrigger
-            this["fzf_options"] = rootCmd.fzfOptions
         }
-        firstOrderFuzzyCompletion.evaluate(writer, context)
+        firstOrderCompletion.evaluate(writer, context)
     }
 
-    private fun highOrderCompletion(cmds: List<FuzzyCommand>, writer: Writer) {
-        // TODO
+    private fun highOrderCompletion(cmds: List<BashCommand>, writer: Writer) {
+        val context = HashMap<String, Any>().apply {
+            this["root_command"] = cmds.first()
+            this["commands"] = cmds
+        }
+        highOrderCompletion.evaluate(writer, context)
     }
 }

@@ -1,12 +1,12 @@
-package pl.kurczews.completion.classic.extractor
+package pl.kurczews.completion.bash.extractor
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import pl.kurczews.completion.classic.Command
-import pl.kurczews.completion.classic.CommandExtractor
+import pl.kurczews.completion.bash.BashCommand
+import pl.kurczews.completion.bash.BashCommandExtractor
 import pl.kurczews.graph.dag.guava.GuavaDirectedAcyclicGraph
 
-class CommandExtractorTest {
+class BashBashCommandExtractorTest {
 
     @Test
     fun should_preserver_head_order() {
@@ -17,8 +17,8 @@ class CommandExtractorTest {
                 .addArc(setOf("d", "a3"))
                 .build()
 
-        val completions = CommandExtractor().extract(unorderedGraph)
-        assertThat(completions.first()).isEqualTo(Command("my-cmd", setOf("a", "d"), emptySet()))
+        val completions = BashCommandExtractor().extract(unorderedGraph)
+        assertThat(completions.first()).isEqualTo(BashCommand("my-cmd", setOf("a", "d"), emptySet()))
     }
 
     @Test
@@ -30,10 +30,10 @@ class CommandExtractorTest {
                 .addEdge("kat", "kat3")
                 .build()
 
-        val completions = CommandExtractor().extract(simpleGraph)
+        val completions = BashCommandExtractor().extract(simpleGraph)
 
-        assertThat(completions).containsExactlyInAnyOrder(Command("kat", setOf("kat1", "kat2", "kat3")))
-        assertThat(completions.first()).isEqualTo(Command("kat", setOf("kat1", "kat2", "kat3")))
+        assertThat(completions).containsExactlyInAnyOrder(BashCommand("kat", setOf("kat1", "kat2", "kat3")))
+        assertThat(completions.first()).isEqualTo(BashCommand("kat", setOf("kat1", "kat2", "kat3")))
     }
 
     @Test
@@ -48,13 +48,13 @@ class CommandExtractorTest {
                 .addEdge("kat1", "-kk1")
                 .build()
 
-        val completions = CommandExtractor().extract(simpleOptionsGraph)
+        val completions = BashCommandExtractor().extract(simpleOptionsGraph)
 
         assertThat(completions).containsExactlyInAnyOrder(
-                Command("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")),
-                Command("kat1", emptySet(), setOf("-kk1"))
+                BashCommand("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")),
+                BashCommand("kat1", emptySet(), setOf("-kk1"))
         )
-        assertThat(completions.first()).isEqualTo(Command("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")))
+        assertThat(completions.first()).isEqualTo(BashCommand("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")))
     }
 
     @Test
@@ -66,10 +66,10 @@ class CommandExtractorTest {
                 .addEdge("kat", "$(ls /tmp)")
                 .build()
 
-        val completions = CommandExtractor().extract(simpleGraph)
+        val completions = BashCommandExtractor().extract(simpleGraph)
 
-        assertThat(completions).containsExactlyInAnyOrder(Command("kat", setOf("kat1", "kat2", "$(ls /tmp)")))
-        assertThat(completions.first()).isEqualTo(Command("kat", setOf("kat1", "kat2", "$(ls /tmp)")))
+        assertThat(completions).containsExactlyInAnyOrder(BashCommand("kat", setOf("kat1", "kat2", "$(ls /tmp)")))
+        assertThat(completions.first()).isEqualTo(BashCommand("kat", setOf("kat1", "kat2", "$(ls /tmp)")))
     }
 
     @Test
@@ -87,16 +87,16 @@ class CommandExtractorTest {
                 .addEdge("kat22", "-kk2")
                 .build()
 
-        val completions = CommandExtractor().extract(simpleOptionsGraph)
+        val completions = BashCommandExtractor().extract(simpleOptionsGraph)
 
         assertThat(completions).containsExactlyInAnyOrder(
-                Command("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")),
-                Command("kat1", setOf("kat11"), setOf("-kk1")),
-                Command("kat2", setOf("kat22")),
-                Command("kat11", setOf("kat111")),
-                Command("kat22", setOf("kat1"), setOf("-kk2"))
+                BashCommand("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")),
+                BashCommand("kat1", setOf("kat11"), setOf("-kk1")),
+                BashCommand("kat2", setOf("kat22")),
+                BashCommand("kat11", setOf("kat111")),
+                BashCommand("kat22", setOf("kat1"), setOf("-kk2"))
         )
-        assertThat(completions.first()).isEqualTo(Command("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")))
+        assertThat(completions.first()).isEqualTo(BashCommand("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")))
     }
 
     @Test
@@ -115,16 +115,16 @@ class CommandExtractorTest {
                 .addEdge("kat22", "-kk2")
                 .build()
 
-        val completions = CommandExtractor().extract(simpleOptionsGraph)
+        val completions = BashCommandExtractor().extract(simpleOptionsGraph)
 
         assertThat(completions).containsExactlyInAnyOrder(
-                Command("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")),
-                Command("kat1", setOf("kat11", "$(ls /tmp)"), setOf("-kk1")),
-                Command("kat2", setOf("kat22")),
-                Command("kat11", setOf("kat111")),
-                Command("kat22", setOf("kat1"), setOf("-kk2"))
+                BashCommand("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")),
+                BashCommand("kat1", setOf("kat11", "$(ls /tmp)"), setOf("-kk1")),
+                BashCommand("kat2", setOf("kat22")),
+                BashCommand("kat11", setOf("kat111")),
+                BashCommand("kat22", setOf("kat1"), setOf("-kk2"))
         )
-        assertThat(completions.first()).isEqualTo(Command("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")))
+        assertThat(completions.first()).isEqualTo(BashCommand("kat", setOf("kat1", "kat2", "kat3"), setOf("-k1", "-k2")))
     }
 
 }

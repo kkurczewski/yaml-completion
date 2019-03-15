@@ -1,9 +1,11 @@
 package pl.kurczews.completion.meta
 
-import pl.kurczews.completion.meta.CompletionType.DEFAULT
+import pl.kurczews.completion.meta.CompletionType.BASH_COMPLETION
 
-data class Metadata(val completionType: CompletionType = DEFAULT) {
+data class Metadata(val completionType: CompletionType) {
     companion object {
-        const val COMPLETION_TYPE_FIELD = "completion-type"
+        fun from(metadataMap: Map<String, String>): Metadata {
+            return Metadata(enumValueOf(metadataMap.getOrDefault("completion-type", BASH_COMPLETION.toString())))
+        }
     }
 }
