@@ -1,13 +1,21 @@
 meta:
-  structure: tree | chain
+  structure: validator | chain
   type: fuzzy
+  variables:
+    foo: ls /foo
+    bar: ls @prev
 
-# limitations:
-#  tree = any expression must be last in chain
-#  chain = more complex tree without limitations, gives access to previous word in chain
+limitations:
+  tree: completion based on directed acyclic graph
+    - isses: any expression must be last in chain
+  rtree: extended validator, gives access to previous word in chain
+    - issues: doesn't affect expression in reliable way
+      example: given foo $(expr) bar, how bar is supossed to know that previous word was taken from $(expr)
+    - issue: validator also is aware of previous word
+  chain: completion is based on position, no need to check previous word
+    - issue: may have hard time with handling options, possible solution is mandatory use of '--'
+    - issue: double expression is impossible if these are related
 
 tpl:
-  - get $(ls /foo) $(ls /bar)
-
-kbe:
-  - $(ls /foo)
+  - get $foo $bar
+  - get some cheese

@@ -31,7 +31,7 @@ class BashCompletionGenerator : CompletionGenerator {
     private fun buildGraph(yamlPayload: YamlEntry<List<String>>): GuavaDirectedAcyclicGraph<String> {
         val graph = GuavaDirectedAcyclicGraph(yamlPayload.name)
         yamlPayload
-                .properties
+                .entries
                 .map { BashSplitter.split(it) }
                 .forEach { graph.addArc(it) }
         return graph

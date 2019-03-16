@@ -3,15 +3,19 @@ package pl.kurczews.yaml
 import pl.kurczews.common.slice2
 import pl.kurczews.common.split2
 import pl.kurczews.common.update
+import pl.kurczews.yaml.Symbols.EXPRESSION_PREFIX
 import java.util.*
 
 object BashSplitter {
 
-    internal const val EXPRESSION_PREFIX = '$'
     private const val COMPLETION_SEPARATOR = ' '
+    private const val OPEN_VARIABLE_BRACKET = '{'
+    private const val CLOSE_VARIABLE_BRACKET = '}'
+    private const val OPEN_EXPRESSION_BRACKET = '('
+    private const val CLOSE_EXPRESSION_BRACKET = ')'
 
     /**
-     * Splits bash ${variables} and $(substitutions) as single words despite spaces
+     * Split string by space and preserve bash ${variables} and $(substitutions) as single words despite spaces
      */
     fun split(line: String): List<String> {
         return when {
@@ -42,8 +46,8 @@ object BashSplitter {
         val brackets = mutableMapOf<Char, Int>().withDefault { 0 }
         for ((index, char) in line.withIndex()) {
             when {
-                char == '{' -> brackets.update('}') { it.inc() }
-                char == '(' -> brackets.update(')') { it.inc() }
+                char == OPEN_VARIABLE_BRACKET -> brackets.update(CLOSE_VARIABLE_BRACKET) { it.inc() }
+                char == OPEN_EXPRESSION_BRACKET -> brackets.update(CLOSE_EXPRESSION_BRACKET) { it.inc() }
                 char.isClosingBracket() -> {
                     brackets.update(char) { it.dec() }
                     if (brackets.values.all { it == 0 }) {
@@ -52,10 +56,10 @@ object BashSplitter {
                 }
             }
         }
-        throw IllegalArgumentException("Couldn't extract expression for: $line")
+        throw IllegalArgumentException("Invalid expression: $line")
     }
 
     private fun Char.isClosingBracket(): Boolean {
-        return this == '}' || this == ')'
+        return this == CLOSE_VARIABLE_BRACKET || this == CLOSE_EXPRESSION_BRACKET
     }
 }
